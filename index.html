@@ -21,20 +21,21 @@
         </ul>
     </script>
     <script>
-        // Function controller
-        function TodoController($scope) {
-            $scope.todos = [
+        // Modules: encapsulate to reuse
+        angular.module('app', ['ngRoute'])
+        .factory('Todos', function() {
+            return [
                 { title: 'Master HTML/CSS/Javascript', completed: true },
                 { title: 'Learn AngularJS', completed: false },
                 { title: 'Build NodeJS backend', completed: false },
                 { title: 'Get started with ExpressJS', completed: false },
                 { title: 'Setup MongoDB database', completed: false },
                 { title: 'Be awesome!', completed: false },
-            ]
-        }
-        // Modules: encapsulate to reuse
-        angular.module('app', ['ngRoute'])
-        .controller('TodoController', TodoController)
+            ];
+        })
+        .controller('TodoController', function ($scope, Todos) {
+            $scope.todos = Todos;
+        })
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
             .when('/', {
