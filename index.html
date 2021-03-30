@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Hello World in AngularJS</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+</head>
+<body ng-app="app">
+    <input ng-model="name"> Hello {{ name }}
+    <div ng-controller="TodoController">
+        <ul>
+            <li ng-repeat="todo in todos">
+                <input type="checkbox" ng-model="todo.completed">
+                {{ todo.title }}
+            </li>
+        </ul>
+    </div>
+    <script>
+        // Modules: encapsulate to reuse
+        angular.module('app', [])
+        .controller('TodoController', ['$scope', function ($scope) {
+            $scope.todos = [
+            { title: 'Learn Javascript', completed: true },
+            { title: 'Learn Angular.js', completed: false },
+            { title: 'Love this tutorial', completed: true },
+            { title: 'Learn Javascript design patterns', completed: false },
+            { title: 'Build Node.js backend', completed: false },
+            ];
+        }]);
+    </script>
+</body>
+</html>
