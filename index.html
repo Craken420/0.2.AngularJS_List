@@ -6,17 +6,20 @@
     <title>Hello World in AngularJS</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
 </head>
 <body ng-app="app">
-    <input ng-model="name"> Hello {{ name }}
-    <div ng-controller="TodoController">
+    <ng-view></ng-view>
+
+    <!-- Templates -->
+    <script type="text/ng-template" id="/todos.html">
         <ul>
             <li ng-repeat="todo in todos">
                 <input type="checkbox" ng-model="todo.completed">
                 {{ todo.title }}
             </li>
         </ul>
-    </div>
+    </script>
     <script>
         // Function controller
         function TodoController($scope) {
@@ -30,8 +33,15 @@
             ]
         }
         // Modules: encapsulate to reuse
-        angular.module('app', [])
-        .controller('TodoController', TodoController);
+        angular.module('app', ['ngRoute'])
+        .controller('TodoController', TodoController)
+        .config(['$routeProvider', function ($routeProvider) {
+            $routeProvider
+            .when('/', {
+                templateUrl: '/todos.html',
+                controller: 'TodoController'
+            });
+        }]);
     </script>
 </body>
 </html>
