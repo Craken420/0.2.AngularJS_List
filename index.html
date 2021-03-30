@@ -10,74 +10,25 @@
 </head>
 <body ng-app="app">
     <ng-view></ng-view>
-
     <!-- Templates -->
     <script type="text/ng-template" id="/todos.html">
         Search: <input type="text" ng-model="search.title">
-        <ul>
-            <li ng-repeat="todo in todos | filter: search">
-                <input type="checkbox" ng-model="todo.completed">
-                <a href="#/{{$index}}">{{todo.title}}</a>
-            </li>
-        </ul>
+        <table border="1" bordercolor="blue">
+            <tr style="color:blue">
+                <th style="width:150px">Name</th>
+                <th style="width:150px">Completed</th>
+            </tr>
+            <tr style="color:pink" ng-repeat="todo in todos | filter: search">
+                <td><a href="#/{{$index}}">{{todo.title}}</a></td>
+                <td><input type="checkbox" ng-model="todo.completed"></td>
+            </tr>
+        </table>
     </script>
     <script type="text/ng-template" id="/todoDetails.html">
         <h1>{{ todo.title }}</h1>
         completed: <input type="checkbox" ng-model="todo.completed">
         note: <textarea>{{todo.note}}</textarea>
     </script>
-    <script>
-        // Modules: encapsulate to reuse
-        angular.module('app', ['ngRoute'])
-        .value('Tasks', [
-            {_id: 1, title: 'Master HTML/CSS/Javascript', completed: true},
-            {_id: 2, title: 'Learn AngularJS', completed: true },
-            {_id: 3, title: 'Get started with ExpressJS', completed: false },
-            {_id: 4, title: 'Setup MongoDB database', completed: false},
-            {_id: 5, title: 'Be awesome!', completed: false}
-        ])
-        //---------------
-        // Services
-        //---------------
-        .factory('TaskService', function(Tasks) {
-            var _items = Tasks
-            return {
-                setListItems: function(items) {
-                    _items = items;
-                    return this;
-                },
-                getListItems: function() {
-                    return _items;
-                }
-            }
-        })
-        //---------------
-        // Controllers
-        //---------------
-        .controller('TodoController', function ($scope, TaskService) {
-            $scope.students = [];
-            var empid = 1;
-            $scope.todos = TaskService.getListItems();
-        })
-        .controller('TodoDetailsCtrl', ['$scope', '$routeParams', 'Todos',
-            function ($scope, $routeParams, Todos) {
-                $scope.todos = Todos[$routeParams.id];
-            }
-        ])
-        //---------------
-        // Routes
-        //---------------
-        .config(['$routeProvider', function ($routeProvider) {
-            $routeProvider
-            .when('/', {
-                templateUrl: '/todos.html',
-                controller: 'TodoController'
-            })
-            .when('/:id', {
-                templateUrl: '/todoDetails.html',
-                controller: 'TodoDetailsCtrl'
-            });
-        }]);
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>
