@@ -12,20 +12,29 @@
     <ng-view></ng-view>
     <!-- Templates -->
     <script type="text/ng-template" id="/todos.html">
-        Search: <input type="text" ng-model="search.title">
+        <input type="hidden" ng-model="newTask.id" />
+        <label>Title:</label>
+        <input type="text" name="title" ng-model="newTask.title" />
+        <label>Nota:</label>
+        <input type="text" name="nota" ng-model="newTask.nota" />
+        <input type="button" value="Save" ng-click="save()"
+            class="btn btn-primary" /><br/><br/>
+        Search: <input type="text" ng-model="search.title"><br/><br/>
         <table border="1" bordercolor="blue">
             <tr style="color:blue">
                 <th style="width:150px">Name</th>
-                <th style="width:150px">Completed</th>
+                <th style="width:150px">Nota</th>
+                <th style="width:120px">Completed</th>
             </tr>
             <tr style="color:pink" ng-repeat="todo in todos | filter: search">
                 <td><a href="#/{{$index}}">{{todo.title}}</a></td>
+                <td>{{todo.nota}}</td>
                 <td><input type="checkbox" ng-model="todo.completed"></td>
             </tr>
         </table>
     </script>
     <script type="text/ng-template" id="/todoDetails.html">
-        <h1>{{ todo.title }}</h1>
+        <input type="text" ng-model="todo.title">
         completed: <input type="checkbox" ng-model="todo.completed">
         note: <textarea>{{todo.note}}</textarea>
     </script>
