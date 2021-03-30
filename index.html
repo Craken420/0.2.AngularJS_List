@@ -17,13 +17,21 @@
         <ul>
             <li ng-repeat="todo in todos | filter: search">
                 <input type="checkbox" ng-model="todo.completed">
-                {{ todo.title }}
+                <a href="#/{{$index}}">{{todo.title}}</a>
             </li>
         </ul>
+    </script>
+    <script type="text/ng-template" id="/todoDetails.html">
+        <h1>{{ todo.title }}</h1>
+        completed: <input type="checkbox" ng-model="todo.completed">
+        note: <textarea>{{todo.note}}</textarea>
     </script>
     <script>
         // Modules: encapsulate to reuse
         angular.module('app', ['ngRoute'])
+        //---------------
+        // Services
+        //---------------
         .factory('Todos', function() {
             return [
                 { title: 'Master HTML/CSS/Javascript', completed: true },
@@ -34,14 +42,29 @@
                 { title: 'Be awesome!', completed: false },
             ];
         })
+        //---------------
+        // Controllers
+        //---------------
         .controller('TodoController', function ($scope, Todos) {
             $scope.todos = Todos;
         })
+        .controller('TodoDetailsCtrl', ['$scope', '$routeParams', 'Todos',
+            function ($scope, $routeParams, Todos) {
+                $scope.todos = Todos[$routeParams.id];
+            }
+        ])
+        //---------------
+        // Routes
+        //---------------
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
             .when('/', {
                 templateUrl: '/todos.html',
                 controller: 'TodoController'
+            })
+            .when('/:id', {
+                templateUrl: '/todoDetails.html',
+                controller: 'TodoDetailsCtrl'
             });
         }]);
     </script>
