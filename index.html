@@ -18,17 +18,20 @@
         </ul>
     </div>
     <script>
+        // Function controller
+        function TodoController($scope) {
+            $scope.todos = [
+                { title: 'Master HTML/CSS/Javascript', completed: true },
+                { title: 'Learn AngularJS', completed: false },
+                { title: 'Build NodeJS backend', completed: false },
+                { title: 'Get started with ExpressJS', completed: false },
+                { title: 'Setup MongoDB database', completed: false },
+                { title: 'Be awesome!', completed: false },
+            ]
+        }
         // Modules: encapsulate to reuse
         angular.module('app', [])
-        .controller('TodoController', ['$scope', function ($scope) {
-            $scope.todos = [
-            { title: 'Learn Javascript', completed: true },
-            { title: 'Learn Angular.js', completed: false },
-            { title: 'Love this tutorial', completed: true },
-            { title: 'Learn Javascript design patterns', completed: false },
-            { title: 'Build Node.js backend', completed: false },
-            ];
-        }]);
+        .controller('TodoController', TodoController);
     </script>
 </body>
 </html>
