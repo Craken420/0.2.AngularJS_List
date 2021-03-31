@@ -21,7 +21,7 @@ angular.module('app', ['ngRoute'])
             return _items;
         },
         create: function (item) {
-            item.id = _items.length;
+            item._id = _items.length + 1;
             _items.push(item);
             return _items;
         },
@@ -31,6 +31,15 @@ angular.module('app', ['ngRoute'])
                     _items[i] = item;
             }
             return _items;
+        },
+        delete: function(id) {
+            for (i in _items) {
+                if (_items[i]._id == id) {
+                    _items.splice(i, 1);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 })
@@ -60,9 +69,14 @@ angular.module('app', ['ngRoute'])
         }
         return false;
     }
+    $scope.delete = function(id) {
+        if ( TaskService.delete(id) ) {
+            $scope.newTask = {};
+            $scope.init();
+        }
+    }
     $scope.init = function() {
         $scope.tasks = TaskService.getListItems();
-        console.log('init tasks : ', $scope.tasks )
     }
     $scope.init();
 })
