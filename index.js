@@ -24,6 +24,13 @@ angular.module('app', ['ngRoute'])
             item.id = _items.length;
             _items.push(item);
             return _items;
+        },
+        edit: function (item) {
+            for (i in _items) {
+                if (_items[i]._id == item._id)
+                    _items[i] = item;
+            }
+            return _items;
         }
     }
 })
@@ -39,19 +46,29 @@ angular.module('app', ['ngRoute'])
     $scope.save = function () {
         if ($scope.newTask._id == null) {
             $scope.create($scope.newTask)
+        } else {
+            TaskService.edit($scope.newTask);
         }
         $scope.newTask = {};
     }
-
+    $scope.edit = function(id) {
+        for (i in $scope.tasks) {
+            if ($scope.tasks[i]._id == id) {
+                $scope.newTask = angular.copy($scope.tasks[i]);
+                return true;
+            }
+        }
+        return false;
+    }
     $scope.init = function() {
-        $scope.todos = TaskService.getListItems();
-        console.log('$scope.todos : ', $scope.todos )
+        $scope.tasks = TaskService.getListItems();
+        console.log('init tasks : ', $scope.tasks )
     }
     $scope.init();
 })
 .controller('TodoDetailsCtrl',
     function ($scope, $routeParams, TaskService) {
-        $scope.todo = TaskService.getListItems()[$routeParams.id];
+        $scope.task = TaskService.getListItems()[$routeParams.id];
     }
 )
 //---------------
