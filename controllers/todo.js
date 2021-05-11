@@ -9,28 +9,29 @@ Ctrl.getAll = async function (req, res) {
 }
 
 Ctrl.save = async function (req, res) {
-    await Todo.create(req.body, function (err, post) {
-        if (err) return res.send(err);
-        res.json(post);
-    });
+    let newTask = JSON.parse(req.query.newTask);
+    if(!newTask._id){
+        await Todo.create(newTask, function (err, post) {
+            if (err) return res.send(err);
+            res.json(post);
+        });
+    } else {
+        await Todo.findByIdAndUpdate(newTask._id, newTask, function (err, data) {
+            if (err) return res.send(err);
+            res.json(data);
+        })
+    }
 }
 
 Ctrl.findTodoById = async function (req, res) {
-    await Todo.findById(req.params.id, function (err, data) {
-        if (err) return res.send(err);
-        res.json(data);
-    })
-}
-
-Ctrl.edit = async function (req, res) {
-    await Todo.findByIdAndUpdate(req.params.id, req.body, function (err, data) {
+    await Todo.findById(req.query.id, function (err, data) {
         if (err) return res.send(err);
         res.json(data);
     })
 }
 
 Ctrl.remove = async function (req, res) {
-    await Todo.findByIdAndRemove(req.params.id, function (err, data) {
+    await Todo.findByIdAndRemove(req.query.id, function (err, data) {
         if (err) return res.send(err);
         res.json(data);
     })

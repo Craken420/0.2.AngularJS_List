@@ -1,6 +1,6 @@
 // Modules: encapsulate to reuse
 angular.module('app')
-.controller('TodoController', function ($scope, TaskService) { // Controllers
+.controller('TodoController', function ($scope, $http) { // Controllers
     $scope.tasks = [];
     $scope.clean = function() {
         $scope.newTask = {}
@@ -12,11 +12,19 @@ angular.module('app')
     }
     $scope.save = function () {
         if(!$scope.newTask || $scope.newTask.length < 1) return;
-
-        var todo = new TaskService($scope.newTask);
-        todo.$save();
-        $scope.newTask = {};
-        $scope.init();
+        $http({
+            method: 'POST',
+            url: '/todos',
+            params: { newTask: $scope.newTask }
+         }).
+         success( function(data) {
+            if(typeof(data) == 'object'){
+               $scope.newTask = {};
+               $scope.init();
+            } else
+               alert('Save error.');
+         }).
+         error( () => alert('Save error.') );
     }
     $scope.edit = function(id) {
         for (i in $scope.tasks) {
@@ -26,11 +34,32 @@ angular.module('app')
         }
     }
     $scope.delete = function(id) {
-        TaskService.delete({id: id});
-        $scope.init();
+        $http({
+            method: 'DELETE',
+            url: '/todos/:id',
+            params: {
+               id: id
+            }
+         }).
+         success(function(data) {
+            if(data)
+               $scope.init();
+            else
+               alert('Error while deleting.');
+         }).
+         error( () => alert('Error while deleting.'));
     }
     $scope.init = function() {
-        $scope.tasks = TaskService.query();
+        $http({
+            method: 'GET', url: '/todos'
+         }).
+         success(function(data) {
+            if(typeof(data) == 'object')
+                $scope.tasks = data;
+            else
+               alert('Error');
+        }).
+        error( () => alert('Error') );
     }
     $scope.init();
 })

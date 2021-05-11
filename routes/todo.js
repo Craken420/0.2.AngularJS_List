@@ -7,7 +7,6 @@ router.route('/')
 
 router.route('/:id')
     .get(Ctrl.findTodoById)
-    .put(Ctrl.edit)
     .delete(Ctrl.remove);
 
 module.exports = router;

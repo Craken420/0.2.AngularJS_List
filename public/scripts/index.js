@@ -1,7 +1,5 @@
 // Modules: encapsulate to reuse
-angular.module('app', ['ngRoute', 'ngResource'])
-.factory('resource', resource) // Resources
-.factory('TaskService', TaskService) // Services
+angular.module('app', ['ngRoute'])
 //---------------
 // Routes
 //---------------
