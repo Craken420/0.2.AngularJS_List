@@ -1,0 +1,32 @@
+<h1>Todo List</h1>
+<input type="hidden" ng-model="newTask._id" />
+<label>Name:</label>
+<input type="text" name="name" ng-model="newTask.name" />
+<label>Impact:</label>
+<input type="text" name="impact" ng-model="newTask.impact" />
+<label>Nota:</label>
+<input type="text" name="note" ng-model="newTask.note" />
+<input type="button" value="Save" ng-click="save()"
+    class="btn btn-primary" /><br/><br/>
+Search: <input type="text" ng-model="search.name"><br/><br/>
+<table border="1" bordercolor="blue">
+    <tr style="color:blue">
+        <th style="width:150px">Name</th>
+        <th style="width:150px">Impact</th>
+        <th style="width:150px">Note</th>
+        <th style="width:120px">Completed</th>
+        <th style="width:120px">Action</th>
+    </tr>
+    <tr style="color:pink" ng-repeat="task in tasks | filter: search">
+        <td><a href="#/{{task._id}}">{{task.name}}</a></td>
+        <td>{{task.impact}}</td>
+        <td>{{task.note}}</td>
+        <td><input type="checkbox" id="completed" name="completed"
+            ng-model="task.completed"
+            ng-click="changeComplete(task._id)"></td>
+        <td>
+            <a href="" ng-click="edit(task._id)">edit</a>
+            <a href="" ng-click="delete(task._id)">delete</a>
+        </td>
+    </tr>
+</table>

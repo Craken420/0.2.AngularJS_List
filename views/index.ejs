@@ -1,144 +1,17 @@
-<html ng-app="app">
+<html>
     <head>
         <title>Lista De Tareas</title>
     </head>
-    <body>
+    <body ng-app="app">
         <ng-view></ng-view>
-
         <!-- Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js"></script>
-
-        <script type="text/ng-template" id="/todos.html">
-            <input type="hidden" ng-model="newTask._id" />
-            <label>Name:</label>
-            <input type="text" name="name" ng-model="newTask.name" />
-            <label>Impact:</label>
-            <input type="text" name="impact" ng-model="newTask.impact" />
-            <label>Nota:</label>
-            <input type="text" name="note" ng-model="newTask.note" />
-            <input type="button" value="Save" ng-click="save()"
-                class="btn btn-primary" /><br/><br/>
-            Search: <input type="text" ng-model="search.name"><br/><br/>
-            <table border="1" bordercolor="blue">
-                <tr style="color:blue">
-                    <th style="width:150px">Name</th>
-                    <th style="width:150px">Impact</th>
-                    <th style="width:150px">Note</th>
-                    <th style="width:120px">Completed</th>
-                    <th style="width:120px">Action</th>
-                </tr>
-                <tr style="color:pink" ng-repeat="task in tasks | filter: search">
-                    <td><a href="#/{{task._id}}">{{task.name}}</a></td>
-                    <td>{{task.impact}}</td>
-                    <td>{{task.note}}</td>
-                    <td><input type="checkbox" id="completed" name="completed"
-                        ng-model="task.completed"
-                        ng-click="changeComplete(task._id)"></td>
-                    <td>
-                        <a href="" ng-click="edit(task._id)">edit</a>
-                        <a href="" ng-click="delete(task._id)">delete</a>
-                    </td>
-                </tr>
-            </table>
-        </script>
-        <script type="text/ng-template" id="/todoDetails.html">
-            Name: <input type="text" ng-model="task.name"><br/>
-            Impact: <input type="text" ng-model="task.impact"><br/>
-            Completed: <input type="checkbox" ng-model="task.completed"><br/>
-            Note: <textarea>{{task.note}}</textarea>
-        </script>
-
-        <script>
-            //---------------
-            // Resources
-            //---------------
-            var resource = function ($resource) {
-                var resource = {};
-                resource.create = (url) => createResource($resource, url);
-                return resource;
-            };
-
-            var createResource = function($resource, url) {
-                var resource = $resource(url, defaultParams, actions);
-                resource.prototype.$save = function () {
-                    if (this._id)
-                        this.$update();
-                    else
-                        this.$create();
-                }
-                return resource;
-            };
-
-            var defaultParams = { id: '@_id' };
-
-            var actions = {
-                'create': {method: 'POST'},
-                'update': {method: 'PUT'}
-            };
-
-            //---------------
-            // Services
-            //---------------
-            var TaskService = function (resource) {
-                return resource.create('todos/:id');
-            };
-
-            // Modules: encapsulate to reuse
-            angular.module('app', ['ngRoute', 'ngResource'])
-            .factory('resource', resource) // Resources
-            .factory('TaskService', TaskService) // Services
-            .controller('TodoController', function ($scope, TaskService) { // Controllers
-                $scope.tasks = [];
-                $scope.changeComplete = function (id) {
-                    $scope.edit(id);
-                    $scope.newTask.completed = !$scope.newTask.completed;
-                    $scope.save();
-                }
-                $scope.save = function () {
-                    if(!$scope.newTask || $scope.newTask.length < 1) return;
-
-                    var todo = new TaskService($scope.newTask);
-                    todo.$save();
-                    $scope.newTask = {};
-                    $scope.init();
-                }
-                $scope.edit = function(id) {
-                    for (i in $scope.tasks) {
-                        if ($scope.tasks[i]._id == id) {
-                            $scope.newTask = angular.copy($scope.tasks[i]);
-                        }
-                    }
-                }
-                $scope.delete = function(id) {
-                    TaskService.delete({id: id});
-                    $scope.init();
-                }
-                $scope.init = function() {
-                    $scope.tasks = TaskService.query();
-                }
-                $scope.init();
-            })
-            .controller('TodoDetailsCtrl',
-                function ($scope, $routeParams, TaskService) {
-                    $scope.task = TaskService.get({id: $routeParams.id});
-                }
-            )
-            //---------------
-            // Routes
-            //---------------
-            .config(['$routeProvider', function ($routeProvider) {
-                $routeProvider
-                .when('/', {
-                    templateUrl: '/todos.html',
-                    controller: 'TodoController'
-                })
-                .when('/:id', {
-                    templateUrl: '/todoDetails.html',
-                    controller: 'TodoDetailsCtrl'
-                });
-            }]);
-        </script>
+        <script src="scripts/resources/Resource.js"></script>
+        <script src="scripts/service/TodoService.js"></script>
+        <script src="scripts/index.js"></script>
+        <script src="scripts/controller/TodoController.js"></script>
+        <script src="scripts/controller/TodoDetailsCtrl.js"></script>
     </body>
 </html>
