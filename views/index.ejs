@@ -51,39 +51,56 @@
         </script>
 
         <script>
-            // Modules: encapsulate to reuse
-            angular.module('app', ['ngRoute', 'ngResource'])
+            //---------------
+            // Resources
+            //---------------
+            var resource = function ($resource) {
+                var resource = {};
+                resource.create = (url) => createResource($resource, url);
+                return resource;
+            };
+
+            var createResource = function($resource, url) {
+                var resource = $resource(url, defaultParams, actions);
+                resource.prototype.$save = function () {
+                    if (this._id)
+                        this.$update();
+                    else
+                        this.$create();
+                }
+                return resource;
+            };
+
+            var defaultParams = { id: '@_id' };
+
+            var actions = {
+                'create': {method: 'POST'},
+                'update': {method: 'PUT'}
+            };
+
             //---------------
             // Services
             //---------------
-            .factory('TaskService', function($resource){
-              return $resource('/todos/:id', null, {
-                'update': { method:'PUT' }
-              });
-            })
-            //---------------
-            // Controllers
-            //---------------
-            .controller('TodoController', function ($scope, TaskService) {
+            var TaskService = function (resource) {
+                return resource.create('todos/:id');
+            };
+
+            // Modules: encapsulate to reuse
+            angular.module('app', ['ngRoute', 'ngResource'])
+            .factory('resource', resource) // Resources
+            .factory('TaskService', TaskService) // Services
+            .controller('TodoController', function ($scope, TaskService) { // Controllers
                 $scope.tasks = [];
                 $scope.changeComplete = function (id) {
                     $scope.edit(id);
-                    $scope.newTask.completed = true;
+                    $scope.newTask.completed = !$scope.newTask.completed;
                     $scope.save();
-                }
-                $scope.create = function(todo) {
-                    todo.completed = false;
-                    todo.$save();
                 }
                 $scope.save = function () {
                     if(!$scope.newTask || $scope.newTask.length < 1) return;
 
                     var todo = new TaskService($scope.newTask);
-                    if (!todo._id)
-                        $scope.create(todo);
-                    else
-                        todo.$update({id: todo._id});
-
+                    todo.$save();
                     $scope.newTask = {};
                     $scope.init();
                 }
