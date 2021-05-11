@@ -2,6 +2,9 @@
 angular.module('app')
 .controller('TodoController', function ($scope, TaskService) { // Controllers
     $scope.tasks = [];
+    $scope.clean = function() {
+        $scope.newTask = {}
+    }
     $scope.changeComplete = function (id) {
         $scope.edit(id);
         $scope.newTask.completed = !$scope.newTask.completed;

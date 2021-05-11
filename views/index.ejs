@@ -1,8 +1,13 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Lista De Tareas</title>
-    </head>
-    <body ng-app="app">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Lista De Tareas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body ng-app="app">
         <ng-view></ng-view>
         <!-- Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
@@ -13,5 +18,5 @@
         <script src="scripts/index.js"></script>
         <script src="scripts/controller/TodoController.js"></script>
         <script src="scripts/controller/TodoDetailsCtrl.js"></script>
-    </body>
+</body>
 </html>

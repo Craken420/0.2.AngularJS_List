@@ -1,32 +1,54 @@
-<h1>Todo List</h1>
-<input type="hidden" ng-model="newTask._id" />
-<label>Name:</label>
-<input type="text" name="name" ng-model="newTask.name" />
-<label>Impact:</label>
-<input type="text" name="impact" ng-model="newTask.impact" />
-<label>Nota:</label>
-<input type="text" name="note" ng-model="newTask.note" />
-<input type="button" value="Save" ng-click="save()"
-    class="btn btn-primary" /><br/><br/>
-Search: <input type="text" ng-model="search.name"><br/><br/>
-<table border="1" bordercolor="blue">
-    <tr style="color:blue">
-        <th style="width:150px">Name</th>
-        <th style="width:150px">Impact</th>
-        <th style="width:150px">Note</th>
-        <th style="width:120px">Completed</th>
-        <th style="width:120px">Action</th>
-    </tr>
-    <tr style="color:pink" ng-repeat="task in tasks | filter: search">
-        <td><a href="#/{{task._id}}">{{task.name}}</a></td>
-        <td>{{task.impact}}</td>
-        <td>{{task.note}}</td>
-        <td><input type="checkbox" id="completed" name="completed"
-            ng-model="task.completed"
-            ng-click="changeComplete(task._id)"></td>
-        <td>
-            <a href="" ng-click="edit(task._id)">edit</a>
-            <a href="" ng-click="delete(task._id)">delete</a>
-        </td>
-    </tr>
-</table>
+
+<div class="container">
+    <h1>Todo List</h1>
+    <form>
+        <div class="row">
+            <input type="hidden" ng-model="newTask._id" />
+            <div class="col-sm-3">
+                <label><b>Name</b></label>
+                <input type="text" class="form-control" name="name" ng-model="newTask.name" />
+            </div>
+            <div class="col-sm-3">
+                <label><b>Impact</b></label>
+                <input type="text" class="form-control" name="impact" ng-model="newTask.impact" />
+            </div>
+            <div class="col-sm-3">
+                <label><b>Note</b></label>
+                <input type="text" class="form-control" name="note" ng-model="newTask.note" />
+            </div>
+            <div class="col-sm-3">
+                <input type="button" value="Save" ng-click="save()" class="btn btn-success" />
+                <input type="button" value="Clean" ng-click="clean()" class="btn btn-danger" />
+            </div>
+        </div><br/>
+        <div class="row">
+            <div class="col-sm-7">
+                <label><b>Search</b></label>
+                <input class="form-control" type="text" ng-model="search.name">
+            </div>
+        </div>
+    </form><br/>
+    <table class="table">
+        <thead>
+            <tr>
+                <th >Name</th>
+                <th>Impact</th>
+                <th>Note</th>
+                <th>Completed</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="task in tasks | filter: search">
+                <td><a href="#/{{task._id}}">{{task.name}}</a></td>
+                <td>{{task.impact}}</td>
+                <td>{{task.note}}</td>
+                <td><input type="checkbox" id="completed" name="completed"
+                    ng-model="task.completed" ng-click="changeComplete(task._id)"></td>
+                <td><a href="" class="btn btn-info" ng-click="edit(task._id)">edit</a></td>
+                <td><a href="" class="btn btn-danger" ng-click="delete(task._id)">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
