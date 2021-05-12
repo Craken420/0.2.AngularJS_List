@@ -3,7 +3,7 @@ angular.module('app')
 .controller('TodoDetailsCtrl', function ($scope, $http, $routeParams) { // Controllers
     $http({
         method: 'GET',
-        url: '/todos/:id',
+        url: 'http://localhost:3003/todos/:id',
         params: {
            id: $routeParams.id
         }

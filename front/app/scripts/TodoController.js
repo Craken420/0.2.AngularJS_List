@@ -1,6 +1,7 @@
 // Modules: encapsulate to reuse
 angular.module('app')
 .controller('TodoController', function ($scope, $http) { // Controllers
+    $scope.serv = 'http://localhost:3003';
     $scope.tasks = [];
     $scope.clean = function() {
         $scope.newTask = {}
@@ -14,7 +15,7 @@ angular.module('app')
         if(!$scope.newTask || $scope.newTask.length < 1) return;
         $http({
             method: 'POST',
-            url: '/todos',
+            url: $scope.serv + '/todos',
             params: { newTask: $scope.newTask }
          }).
          success( function(data) {
@@ -36,7 +37,7 @@ angular.module('app')
     $scope.delete = function(id) {
         $http({
             method: 'DELETE',
-            url: '/todos/:id',
+            url: $scope.serv + '/todos/:id',
             params: {
                id: id
             }
@@ -51,15 +52,15 @@ angular.module('app')
     }
     $scope.init = function() {
         $http({
-            method: 'GET', url: '/todos'
-         }).
-         success(function(data) {
+            method: 'GET', url: $scope.serv + '/todos'
+         })
+        .success(function(data) {
             if(typeof(data) == 'object')
                 $scope.tasks = data;
             else
                alert('Error');
-        }).
-        error( () => alert('Error') );
+        })
+        .error( () => alert('Error') );
     }
     $scope.init();
 })
