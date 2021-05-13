@@ -61,6 +61,7 @@ angular.module('app')
                alert('Error');
         })
         .error( () => alert('Error') );
+        
     }
     $scope.init();
 })

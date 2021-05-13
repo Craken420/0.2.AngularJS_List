@@ -1,0 +1,18 @@
+extends layout
+
+mixin field(label, model)
+    .form-group
+        label(for="#{label}"): b #{label}
+        input(type="text" class="form-control" id="#{label}" ng-model="#{model}")
+
+block content
+    .container
+        form
+            +field("Name", "task.name")
+            +field("Impact", "task.impact")
+            .form-group: .form-check
+                input(type="checkbox" class="form-check-input" id="Completed" ng-model="task.completed")
+                label(class="form-check-label" for="Completed"): b Completed
+            .form-group
+                label(for="Note"): b Note
+                textarea(class="form-control" id="Note") {{task.note}}

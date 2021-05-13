@@ -3,14 +3,16 @@ angular.module('app', ['ngRoute'])
 //---------------
 // Routes
 //---------------
-.config(['$routeProvider', function ($routeProvider) {
+.config(function ($routeProvider, $locationProvider ) {
+    // $locationProvider.html5Mode(true);
     $routeProvider
     .when('/', {
-        templateUrl: 'views/todos.html',
+        templateUrl: 'todos',
         controller: 'TodoController'
     })
     .when('/:id', {
-        templateUrl: 'views/todoDetails.html',
+        templateUrl: 'todoDetails',
         controller: 'TodoDetailsCtrl'
-    });
-}]);
+    })
+    .otherwise({redirectTo:'/'});
+});

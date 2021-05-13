@@ -1,0 +1,49 @@
+extends layout
+
+mixin field(col, label, name, model)
+    div(class="#{col}")
+        label: b #{label}
+        input(type="text" class="form-control" name="#{name}" ng-model="#{model}")
+
+mixin action(value, act, cs)
+    input(type="button" value="#{value}" ng-click="#{act}" class="#{cs}" )
+
+mixin lnk(ref, cs, act, desc)
+    a(href="#{ref}" class="#{cs}" ng-click="#{act}") #{desc}
+
+block content
+    .container
+        form
+            .row
+                input(type="hidden" ng-model="newTask._id")
+                +field("col-sm-3", "Name", "name", "newTask.name")
+                +field("col-sm-3", "Impact", "impact", "newTask.impact")
+                +field("col-sm-3", "Note", "note", "newTask.note")
+                .col-sm-3
+                    +action("Save", "save()", "btn btn-success")
+                    +action("Clean", "clean()", "btn btn-danger")
+            br
+            .row
+                +field("col-sm-7", "Search", "search.name", "search.name")
+        br
+        table(class="table")
+            thead
+                tr
+                    th Name
+                    th Impact
+                    th Note
+                    th Completed
+                    th 
+                    th 
+            tbody
+                tr(ng-repeat="task in tasks | filter: search.name")
+                    td: a(href="#/{{task._id}}") {{task.name}}
+                    td {{task.impact}}
+                    td {{task.note}}
+                    td
+                        input(type="checkbox" id="completed" name="completed"
+                            ng-model="task.completed" ng-click="changeComplete(task._id)")
+                    td
+                        +lnk("", "btn btn-info", "edit(task._id)", "Edit")
+                    td
+                        +lnk("", "btn btn-danger", "delete(task._id)", "Delete")
